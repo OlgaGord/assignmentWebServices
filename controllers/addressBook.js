@@ -22,6 +22,7 @@ module.exports = class {
 
 	static async addAddress(req, res) {
 
+
 		const data = req.body;
 
 		let p = {
