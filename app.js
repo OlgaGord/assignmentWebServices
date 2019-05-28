@@ -9,6 +9,7 @@ const cors = require("cors");
 
 
 const addressBookRouter = require("./routes/api/addressBook");
+const ipgeolocationRouter = require("./routes/api/ipgeolocation");
 const geo = require("./model/ipgeolocation");
 
 const port = 9000;
@@ -20,6 +21,7 @@ app.use(cookieParser());
 app.use("/inc", express.static(path.join(__dirname, "inc")));
 
 app.use("/api/addressBook", addressBookRouter);
+app.use("/api/ipgeolocation", ipgeolocationRouter);
 
 app.use((req, res, next) => {
 

@@ -1,10 +1,23 @@
 
 const router = require("express").Router();
+const geo = require("../../model/ipgeolocation");
 const addressBookController = require("../../controllers/addressBook");
 
 router.get("/", (req, res) => {
 	const result = addressBookController.allAddresses(req, res);
 	// res.send(result);
+	return result;
+});
+
+router.get("/allTracks/", (req, res) => {
+	const result = geo.getTracks(req, res);
+	return result;
+});
+
+router.get("/ipgeolocation/:ip", (req, res) => {
+	console.log(req);
+	const ip = req.params.ip;
+	const result = geo.getGeo(req, res, ip);
 	return result;
 });
 
