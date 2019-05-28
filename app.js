@@ -20,16 +20,17 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use("/inc", express.static(path.join(__dirname, "inc")));
 
-app.use("/api/addressBook", addressBookRouter);
-app.use("/api/ipgeolocation", ipgeolocationRouter);
-
 app.use((req, res, next) => {
 
 	//console.log(ip);
 	geo.addTrack(req);
 
 	next();
-})
+});
+app.use("/api/addressBook", addressBookRouter);
+app.use("/api/ipgeolocation", ipgeolocationRouter);
+
+
 
 app.listen(port, function () {
 	dbLayer.init();

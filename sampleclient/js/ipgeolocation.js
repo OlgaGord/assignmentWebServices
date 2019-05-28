@@ -1,5 +1,6 @@
 const ipgeolocation = {
     list: "http://localhost:9000/api/ipgeolocation/AllTracks"
+
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -12,7 +13,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     dataJson.forEach(element => {
         const tEl = document.createElement("div");
-        tEl.innerHTML = element.ip;
+
+        // "latitude": 45.4553, "longitude": -75.7652
+
+
+
+        tEl.innerHTML = element.ip + " , " + element.country_name + " , " + element.country_capital + " , " + element.state_prov + " , " + element.district + " , " + element.city + " , " + element.country_flag;
         elLocation.appendChild(tEl);
 
     });
