@@ -1,31 +1,9 @@
 const db = require("../config/db");
 const fetch = require("node-fetch");
-
 module.exports = class {
-
-    /*
-    static async getGeo(ip) {
-        let conn = await db.getConnection();
-        const rows = await conn.query(
-            "SELECT * FROM ipgeolocation WHERE ip = ?"
-            [ip]
-        )
-        conn.end();
-        if (rows.count > 1) { return rows[0] }
-        else { return null }
-    }
-*/
-
     static async addTrack(req) {
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-        console.log("IP:");
-        console.log(req.ip);
         ip = "206.167.12.9";
-
-
-
-        //var geo = getGeo(ip);
-
 
         let conn = await db.getConnection();
 
@@ -33,28 +11,20 @@ module.exports = class {
             "INSERT INTO track (ip, uri) VALUES(?, ?)",
             [ip, req.originalUrl]
         );
-        console.log("after insert track");
+
         const rows = await conn.query(
             "SELECT * FROM ipgeolocation WHERE ip = ?",
             [ip]
         );
-        console.log("after query geo");
-
-        console.log(rows.length);
         if (rows.length == 0) {
             const geoResult = await fetch("https://api.ipgeolocation.io/ipgeo?apiKey=c461a284199842f893dc5ec8561c9a7a&ip=" + ip);
             const geo = await geoResult.json();
-
-            console.log(geo);
 
             const georesult = await conn.query(
                 "INSERT INTO `ipgeolocation`(`geoname_id`, `ip`, `country_name`, `country_capital`, `state_prov`, `district`, `city`, `zipcode`, `latitude`, `longitude`, `country_flag`, `organization`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
                 [geo.geoname_id, ip, geo.country_name, geo.country_capital, geo.state_prov, geo.district, geo.city, geo.zipcode, geo.latitude, geo.longitude, geo.country_flag, geo.organization]
             );
         }
-
-
-
 
         conn.end();
     }

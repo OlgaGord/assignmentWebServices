@@ -1,0 +1,19 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+.wrapper {
+  display: flex;
+}
+
+#map {
+  position: relative;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  height: 50vh;
+  flex-direction: column;
+}
+#people {
+  flex-direction: column;
+}
