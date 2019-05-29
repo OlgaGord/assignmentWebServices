@@ -3,7 +3,7 @@ const fetch = require("node-fetch");
 module.exports = class {
     static async addTrack(req) {
         var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-        ip = "206.167.12.9";
+        ip = "212.67.12.9";
 
         let conn = await db.getConnection();
 
@@ -40,6 +40,7 @@ module.exports = class {
     static async getTracksByIP(req, res, ip) {
         let conn = await db.getConnection();
         const rows = await conn.query(
+            //    SELECT * FROM(select  max(ip) as ip, COUNT(1) from track group by ip) t INNER JOIN ipgeolocation g ON t.ip = g.ip
             "SELECT * FROM track t left join ipgeolocation g on t.ip = g.ip WHERE t.ip like ?",
             [ip + '%']
         )
