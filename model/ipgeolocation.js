@@ -72,4 +72,11 @@ module.exports = class {
     conn.end();
     return rows;
   }
+
+  static async getWeather(lat, lon) {
+    var uri = `http://api.apixu.com/v1/current.json?q=${lat},${lon}&key=907b13a03758480191c144019193005`;
+    console.log(uri);
+    const result = await fetch(uri);
+    return await result.json();
+  }
 };

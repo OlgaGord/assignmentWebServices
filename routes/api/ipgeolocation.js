@@ -18,6 +18,10 @@ router.get("/statistics/", (req, res) => {
   return result;
 });
 
+router.get("/weather", (req, res) => {
+  return geoController.getWeather(req, res);
+});
+
 router.get("/tracks/:ip", (req, res) => {
   console.log(req.params.ip);
   var ip = req.params.ip;

@@ -14,6 +14,12 @@ module.exports = class {
     return res.json(data);
   }
 
+  static async getWeather(req, res) {
+    console.log(req.query);
+    const data = await geoModel.getWeather(req.query.lat, req.query.lon);
+    return res.json(data);
+  }
+
   static async getTracksByIP(req, res, ip) {
     const data = await geoModel.getTracksByIP(req, res, ip);
 
