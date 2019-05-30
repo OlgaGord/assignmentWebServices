@@ -1,5 +1,6 @@
 const ipgeolocation = {
-    list: "/api/ipgeolocation/statistics"
+    list: "/api/ipgeolocation/statistics",
+    weather: "/api/ipgeolocation/weather"
 
 };
 
@@ -18,8 +19,6 @@ const initMap = container => {
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-
-    // const map = document.getElementById("map");
     let map = initMap("map");
     let markers = [];
 
@@ -30,11 +29,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     dataJson.forEach(element => {
 
+
         let userMarker = new mapboxgl.Marker()
             .setLngLat([element.longitude, element.latitude])
             .setPopup(
                 new mapboxgl.Popup({ className: 'here' }).setHTML(
-                    '<h1>You are here</h1>'
+                    '<h4>You visited our site</h4>' + element.visits + "times"
                 ))
             .addTo(map)
             .togglePopup();
@@ -44,16 +44,29 @@ document.addEventListener("DOMContentLoaded", async () => {
         tEl.innerHTML = element.ip + " , " + element.country_name + " , " + element.country_capital + " , " + element.state_prov
             + " , " + element.district + " , " + element.city + " , " + '<img class="flag" src="' + element.country_flag + '" />';
 
-        // element.latitude + ' , ' + element.longitude
-
         elLocation.appendChild(tEl);
 
+        /*
+        const elClick = (map, tEl) => {
+
+            if (element.longitude !== undefined && element.latitude !== undefined) {
+                map.flyTo({ center: element.longitude, element.latitude});
+            }
+        };
+*/
+        tEl.addEventListener("click", async () => {
+
+            if (element.longitude !== undefined && element.latitude !== undefined) {
+                map.flyTo({ center: [element.longitude, element.latitude] });
+                var weatherUri = `/api/ipgeolocation/weather?lat=${element.longitude}&lon=${element.latitude}`;
+                console.log(weatherUri);
+                const weather = await fetch(weatherUri);
+                const weatherJson = await weather.json();
+                console.log(weatherJson);
+            }
+        });
+
     });
-
-
-
-
-
 
 });
 
