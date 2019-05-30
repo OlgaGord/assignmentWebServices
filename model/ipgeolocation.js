@@ -1,10 +1,9 @@
 const db = require("../config/db");
 const fetch = require("node-fetch");
 module.exports = class {
-
     static async addTrack(req) {
-        var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-        ip = "76.16.12.9";
+        var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+        ip = "212.67.12.9";
 
         let conn = await db.getConnection();
 
@@ -13,51 +12,27 @@ module.exports = class {
             [ip, req.originalUrl]
         );
 
-        const rows = await conn.query("SELECT * FROM ipgeolocation WHERE ip = ?", [
-            ip
-        ]);
+        const rows = await conn.query(
+            "SELECT * FROM ipgeolocation WHERE ip = ?",
+            [ip]
+        );
         if (rows.length == 0) {
-            const geoResult = await fetch(
-                "https://api.ipgeolocation.io/ipgeo?apiKey=c461a284199842f893dc5ec8561c9a7a&ip=" +
-                ip
-            );
+            const geoResult = await fetch("https://api.ipgeolocation.io/ipgeo?apiKey=c461a284199842f893dc5ec8561c9a7a&ip=" + ip);
             const geo = await geoResult.json();
 
             const georesult = await conn.query(
                 "INSERT INTO `ipgeolocation`(`geoname_id`, `ip`, `country_name`, `country_capital`, `state_prov`, `district`, `city`, `zipcode`, `latitude`, `longitude`, `country_flag`, `organization`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
-                [
-                    geo.geoname_id,
-                    ip,
-                    geo.country_name,
-                    geo.country_capital,
-                    geo.state_prov,
-                    geo.district,
-                    geo.city,
-                    geo.zipcode,
-                    geo.latitude,
-                    geo.longitude,
-                    geo.country_flag,
-                    geo.organization
-                ]
+                [geo.geoname_id, ip, geo.country_name, geo.country_capital, geo.state_prov, geo.district, geo.city, geo.zipcode, geo.latitude, geo.longitude, geo.country_flag, geo.organization]
             );
         }
+
+        conn.end();
     }
-
-
     static async getTracks(req, res) {
         let conn = await db.getConnection();
         const rows = await conn.query(
-            "SELECT * FROM track t left join ipgeolocation g on t.ip = g.ip  ORDER BY t.track_id DESC"
-        );
-        conn.end();
-        return rows;
-    }
-
-    static async summaryStatistics() {
-        let conn = await db.getConnection();
-        let cmd =
-            "SELECT t.count as visits,g.* FROM (SELECT  MAX(ip) AS ip, COUNT(1) AS COUNT FROM track GROUP BY ip) t INNER JOIN ipgeolocation g ON t.ip = g.ip";
-        const rows = await conn.query(cmd);
+            "SELECT * FROM track t left join ipgeolocation g on t.ip = g.ip"
+        )
         conn.end();
         return rows;
     }
@@ -65,9 +40,10 @@ module.exports = class {
     static async getTracksByIP(req, res, ip) {
         let conn = await db.getConnection();
         const rows = await conn.query(
-            "SELECT * FROM track t left join ipgeolocation g on t.ip = g.ip WHERE t.ip like ? ORDER BY t.track_id DESC",
-            [ip + "%"]
-        );
+            //    SELECT * FROM(select  max(ip) as ip, COUNT(1) from track group by ip) t INNER JOIN ipgeolocation g ON t.ip = g.ip
+            "SELECT * FROM track t left join ipgeolocation g on t.ip = g.ip WHERE t.ip like ?",
+            [ip + '%']
+        )
         conn.end();
         return rows;
     }
