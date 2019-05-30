@@ -1,5 +1,5 @@
 const ipgeolocation = {
-    list: "http://localhost:9000/api/ipgeolocation/AllTracks"
+    list: "/api/ipgeolocation/statistics"
 
 };
 

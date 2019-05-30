@@ -18,7 +18,7 @@ app.options("*", cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use("/inc", express.static(path.join(__dirname, "inc")));
+
 
 app.use((req, res, next) => {
 
@@ -30,7 +30,7 @@ app.use((req, res, next) => {
 app.use("/api/addressBook", addressBookRouter);
 app.use("/api/ipgeolocation", ipgeolocationRouter);
 
-
+app.use("/", express.static(path.join(__dirname, "sampleclient")));
 
 app.listen(port, function () {
 	dbLayer.init();
