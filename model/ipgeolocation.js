@@ -3,7 +3,9 @@ const fetch = require("node-fetch");
 module.exports = class {
   static async addTrack(req) {
     var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-    ip = "76.16.12.9";
+
+    if (ip == "::1") ip = "76.16.12.9";
+    console.log(ip);
 
     let conn = await db.getConnection();
 
@@ -55,7 +57,7 @@ module.exports = class {
   static async summaryStatistics() {
     let conn = await db.getConnection();
     let cmd =
-      "SELECT t.count as visits,g.* FROM (SELECT  MAX(ip) AS ip, COUNT(1) AS COUNT FROM track GROUP BY ip) t INNER JOIN ipgeolocation g ON t.ip = g.ip";
+      "SELECT t.visits, t.occurred, g.* FROM (SELECT  MAX(ip) AS ip, COUNT(1) AS visits, MAX(occurred) as occurred FROM track GROUP BY ip ORDER BY track_id DESC) t INNER JOIN ipgeolocation g ON t.ip = g.ip ORDER BY occurred DESC";
     const rows = await conn.query(cmd);
     conn.end();
     return rows;
