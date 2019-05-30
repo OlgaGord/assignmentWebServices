@@ -2,8 +2,10 @@ const db = require("../config/db");
 const fetch = require("node-fetch");
 module.exports = class {
     static async addTrack(req) {
-        var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-        ip = "212.67.12.9";
+        var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+
+        if (ip == "::1") ip = "76.16.12.9";
+        console.log(ip);
 
         let conn = await db.getConnection();
 
@@ -25,14 +27,14 @@ module.exports = class {
                 [geo.geoname_id, ip, geo.country_name, geo.country_capital, geo.state_prov, geo.district, geo.city, geo.zipcode, geo.latitude, geo.longitude, geo.country_flag, geo.organization]
             );
         }
-
         conn.end();
     }
-    static async getTracks(req, res) {
+
+    static async summaryStatistics() {
         let conn = await db.getConnection();
-        const rows = await conn.query(
-            "SELECT * FROM track t left join ipgeolocation g on t.ip = g.ip"
-        )
+        let cmd =
+            "SELECT t.visits, t.occurred, g.* FROM (SELECT  MAX(ip) AS ip, COUNT(1) AS visits, MAX(occurred) as occurred FROM track GROUP BY ip ORDER BY track_id DESC) t INNER JOIN ipgeolocation g ON t.ip = g.ip ORDER BY occurred DESC";
+        const rows = await conn.query(cmd);
         conn.end();
         return rows;
     }
