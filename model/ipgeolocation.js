@@ -42,16 +42,7 @@ module.exports = class {
         ]
       );
     }
-
     conn.end();
-  }
-  static async getTracks(req, res) {
-    let conn = await db.getConnection();
-    const rows = await conn.query(
-      "SELECT * FROM track t left join ipgeolocation g on t.ip = g.ip  ORDER BY t.track_id DESC"
-    );
-    conn.end();
-    return rows;
   }
 
   static async summaryStatistics() {
@@ -66,7 +57,8 @@ module.exports = class {
   static async getTracksByIP(req, res, ip) {
     let conn = await db.getConnection();
     const rows = await conn.query(
-      "SELECT * FROM track t left join ipgeolocation g on t.ip = g.ip WHERE t.ip like ? ORDER BY t.track_id DESC",
+      //    SELECT * FROM(select  max(ip) as ip, COUNT(1) from track group by ip) t INNER JOIN ipgeolocation g ON t.ip = g.ip
+      "SELECT * FROM track t left join ipgeolocation g on t.ip = g.ip WHERE t.ip like ?",
       [ip + "%"]
     );
     conn.end();
