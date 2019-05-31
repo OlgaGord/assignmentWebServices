@@ -1,9 +1,17 @@
 const db = require("../config/db");
 const fetch = require("node-fetch");
 module.exports = class {
+  static async getTracks() {
+    let conn = await db.getConnection();
+    let cmd =
+      "SELECT * FROM track t INNER JOIN ipgeolocation g ON t.ip = g.ip ORDER BY t.track_id DESC";
+    const rows = await conn.query(cmd);
+    conn.end();
+    return rows;
+  }
+
   static async addTrack(req) {
     var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-
     if (ip == "::1") ip = "76.16.12.9";
     console.log(ip);
 
@@ -17,6 +25,7 @@ module.exports = class {
     const rows = await conn.query("SELECT * FROM ipgeolocation WHERE ip = ?", [
       ip
     ]);
+
     if (rows.length == 0) {
       const geoResult = await fetch(
         "https://api.ipgeolocation.io/ipgeo?apiKey=c461a284199842f893dc5ec8561c9a7a&ip=" +
