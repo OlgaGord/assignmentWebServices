@@ -12,7 +12,7 @@ module.exports = class {
 
   static async addTrack(req) {
     var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-    if (ip == "::1") ip = "76.16.12.9";
+    if (ip == "::1") ip = "66.16.12.9";
     console.log(ip);
 
     let conn = await db.getConnection();
@@ -34,7 +34,7 @@ module.exports = class {
       const geo = await geoResult.json();
 
       const georesult = await conn.query(
-        "INSERT INTO `ipgeolocation`(`geoname_id`, `ip`, `country_name`, `country_capital`, `state_prov`, `district`, `city`, `zipcode`, `latitude`, `longitude`, `country_flag`, `organization`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+        "INSERT IGNORE INTO `ipgeolocation`(`geoname_id`, `ip`, `country_name`, `country_capital`, `state_prov`, `district`, `city`, `zipcode`, `latitude`, `longitude`, `country_flag`, `organization`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
         [
           geo.geoname_id,
           ip,
