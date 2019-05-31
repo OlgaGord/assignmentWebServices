@@ -17,13 +17,17 @@ const initMap = container => {
     return map;
 };
 
+
+const weather = async (element) => {
+    var weatherUri = `/api/ipgeolocation/weather?lat=${element.longitude}&lon=${element.latitude}`;
+    const weather = await fetch(weatherUri);
+    const weatherJson = await weather.json();
+    return weatherJson;
+}
+
+
 document.addEventListener("DOMContentLoaded", async () => {
-    const weather = async (element) => {
-        var weatherUri = `/api/ipgeolocation/weather?lat=${element.longitude}&lon=${element.latitude}`;
-        const weather = await fetch(weatherUri);
-        const weatherJson = await weather.json();
-        return weatherJson;
-    }
+
     let map = initMap("map");
     let markers = [];
 
@@ -31,18 +35,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     const data = await fetch(ipgeolocation.list);
     const dataJson = await data.json();
     let userMarker = new mapboxgl.Marker();
+
     dataJson.forEach(element => {
-        weather(element).then(weatherJson => {
-            let userMarker = new mapboxgl.Marker()
-                .setLngLat([element.longitude, element.latitude])
-                .setPopup(
-                    new mapboxgl.Popup({ className: 'here' }).setHTML(
-                        '<h4>You visited our site  </h4>' + element.visits + "times" + '<img src="' + weatherJson.current.condition.icon + '"/>'
-                    ))
-                .addTo(map)
-                .togglePopup();
+        let userMarker = new mapboxgl.Marker()
+            .setLngLat([element.longitude, element.latitude])
+            .addTo(map);
+        const p = new mapboxgl.Popup({ className: 'here' }).setHTML(
+            //'<h4>You visited our site  </h4>' + element.visits + "times" + '<img src="' + weatherJson.current.condition.icon + '"/>'
+        ).on("open", () => {
+            weather(element).then(weatherJson => {
+                console.log(weatherJson.current.condition.icon);
+                p.setHTML('<div><h4>You visited our site  </h4>' + element.visits + "times" + '<img src="' + weatherJson.current.condition.icon + '"/></div>"');
+            });
+
+
+
 
         });
+        userMarker.setPopup(p)
+
         const tEl = document.createElement("div");
         tEl.classList.add("record");
         tEl.innerHTML = element.ip + " , " + element.country_name + " , " + element.country_capital + " , " + element.state_prov
@@ -53,6 +64,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (element.longitude !== undefined && element.latitude !== undefined) {
                 map.flyTo({ center: [element.longitude, element.latitude] });
+
+
             }
 
         });

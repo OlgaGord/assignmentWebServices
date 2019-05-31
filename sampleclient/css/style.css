@@ -35,3 +35,6 @@ body {
   opacity: 0.7;
   color: white;
 }
+.mapboxgl-popup-content {
+  background-color: light-grey;
+}
