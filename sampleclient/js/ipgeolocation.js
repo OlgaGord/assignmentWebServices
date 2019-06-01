@@ -17,14 +17,12 @@ const initMap = container => {
     return map;
 };
 
-
 const weather = async (element) => {
     var weatherUri = `/api/ipgeolocation/weather?lat=${element.longitude}&lon=${element.latitude}`;
     const weather = await fetch(weatherUri);
     const weatherJson = await weather.json();
     return weatherJson;
 }
-
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -41,16 +39,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             .setLngLat([element.longitude, element.latitude])
             .addTo(map);
         const p = new mapboxgl.Popup({ className: 'here' }).setHTML(
-            //'<h4>You visited our site  </h4>' + element.visits + "times" + '<img src="' + weatherJson.current.condition.icon + '"/>'
         ).on("open", () => {
             weather(element).then(weatherJson => {
-                console.log(weatherJson.current.condition.icon);
-                p.setHTML('<div><h4>You visited our site  </h4>' + element.visits + "times" + '<img src="' + weatherJson.current.condition.icon + '"/></div>"');
+                p.setHTML('<div class="popup"><h4>You visited our site  </h4>' + element.visits + "times" + '<br><img src="' + weatherJson.current.condition.icon + '"/></div>');
             });
-
-
-
-
         });
         userMarker.setPopup(p)
 
@@ -64,7 +56,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (element.longitude !== undefined && element.latitude !== undefined) {
                 map.flyTo({ center: [element.longitude, element.latitude] });
-
 
             }
 
