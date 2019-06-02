@@ -33,15 +33,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     const data = await fetch(ipgeolocation.list);
     const dataJson = await data.json();
     let userMarker = new mapboxgl.Marker();
+    let visits = [];
 
     dataJson.forEach(element => {
+        visits.push(element.visits);
+
+
         let userMarker = new mapboxgl.Marker()
             .setLngLat([element.longitude, element.latitude])
             .addTo(map);
         const p = new mapboxgl.Popup({ className: 'here' }).setHTML(
         ).on("open", () => {
             weather(element).then(weatherJson => {
-                p.setHTML('<div class="popup"><h4>You visited our site  </h4>' + element.visits + "times" + '<br><img src="'
+                p.setHTML('<div class="popup"><h4>You visited our site  </h4>' + element.visits + " " + "times" + '<br><img src="'
                     + weatherJson.current.condition.icon + '"/><br>' + weatherJson.current.temp_c + '&#8451;</div>');
             });
         });
@@ -63,6 +67,28 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
     });
+
+    visits.sort(function (a, b) {
+        return a - b;
+    });
+    let visitMinBtn = document.getElementById("minVisit");
+    visitMinBtn.addEventListener("click", () => {
+        const visitMinDiv = document.createElement("div");
+        visitMinDiv.classList.add("visitMin");
+        elLocation.appendChild(visitMinDiv);
+        visitMinDiv.innerHTML = "Min visits" + " " + visits[0];
+
+    })
+
+    let visitMaxBtn = document.getElementById("maxVisit");
+    visitMaxBtn.addEventListener("click", () => {
+        const visitMaxDiv = document.createElement("div");
+        visitMaxDiv.classList.add("visitMax");
+        elLocation.appendChild(visitMaxDiv);
+        visitMaxDiv.innerHTML = "Max visits" + " " + visits[visits.length - 1];
+
+    })
+
 
 });
 

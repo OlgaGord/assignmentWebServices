@@ -28,7 +28,8 @@ body {
 }
 #ipgeolocation {
   /* display: table-cell; */
-  justify-items: left;
+  /* justify-items: left; */
+  justify-content: space-around;
   flex-direction: column;
 }
 
@@ -45,4 +46,26 @@ body {
   background-color: light-grey;
   border-radius: 10px;
   border-style: inset;
+}
+#maxVisit {
+  width: 8vw;
+  height: 3vh;
+}
+#minVisit {
+  width: 8vw;
+  height: 3vh;
+}
+
+.visitMin,
+.visitMax {
+  width: 5vw;
+  height: 2vh;
+  border: 2px solid grey;
+  border-radius: 10px;
+  text-align: center;
+  flex-direction: column;
+  margin: 2%;
+}
+.buttons {
+  margin: 2%;
 }
