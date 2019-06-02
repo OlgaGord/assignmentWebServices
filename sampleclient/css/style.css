@@ -3,7 +3,8 @@ body {
   padding: 0;
 }
 .wrapper {
-  display: table;
+  /* display: table; */
+  display: flex;
   width: 100%;
 }
 .flag {
@@ -16,15 +17,19 @@ body {
   border: 1px solid lightgray;
   resize: both;
   overflow: auto;
-  display: table-cell;
+  justify-items: left;
+  /* display: table-cell; */
   width: 100%;
+  height: 100vh;
+  flex-direction: column;
 }
-
 .mapboxgl-canvas {
   width: 100%;
 }
 #ipgeolocation {
-  display: table-cell;
+  /* display: table-cell; */
+  justify-items: left;
+  flex-direction: column;
 }
 
 .record {
