@@ -3,34 +3,33 @@ body {
   padding: 0;
 }
 .wrapper {
-  display: flex;
-  justify-content: space-around;
+  display: table;
+  width: 100%;
 }
 .flag {
   padding: 1%;
 }
 
 #map {
-  position: relative;
-  top: 0;
-  bottom: 0;
-  width: 60%;
-  height: 100vh;
-  flex-direction: column;
   padding-left: 2%;
   padding-right: 2%;
   border: 1px solid lightgray;
   resize: both;
   overflow: auto;
+  display: table-cell;
+  width: 100%;
+}
+
+.mapboxgl-canvas {
+  width: 100%;
 }
 #ipgeolocation {
-  flex-direction: column;
-  width: 40%;
-  flex-wrap: nowrap;
+  display: table-cell;
 }
 
 .record {
   border: 1px solid lightgray;
+  font-size: 1.5vh;
 }
 .record:hover {
   background-color: black;
@@ -39,4 +38,6 @@ body {
 }
 .mapboxgl-popup-content {
   background-color: light-grey;
+  border-radius: 10px;
+  border-style: inset;
 }

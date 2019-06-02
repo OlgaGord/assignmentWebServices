@@ -12,7 +12,7 @@ const initMap = container => {
         container: container,
         style: 'mapbox://styles/ogo123/cjw8dsa9c5ko61cnwxyn68nbf',
         center: [-122.424100, 37.780000],
-        zoom: 9.0
+        zoom: 12.0
     });
     return map;
 };
