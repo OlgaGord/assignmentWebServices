@@ -41,7 +41,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const p = new mapboxgl.Popup({ className: 'here' }).setHTML(
         ).on("open", () => {
             weather(element).then(weatherJson => {
-                p.setHTML('<div class="popup"><h4>You visited our site  </h4>' + element.visits + "times" + '<br><img src="' + weatherJson.current.condition.icon + '"/></div>');
+                p.setHTML('<div class="popup"><h4>You visited our site  </h4>' + element.visits + "times" + '<br><img src="'
+                    + weatherJson.current.condition.icon + '"/><br>' + weatherJson.current.temp_c + '&#8451;</div>');
             });
         });
         userMarker.setPopup(p)
