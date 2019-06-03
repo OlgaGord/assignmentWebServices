@@ -23,7 +23,7 @@ router.get("/weather", (req, res) => {
 });
 
 router.get("/tracks/:ip", (req, res) => {
-  console.log(req.params.ip);
+  // console.log(req.params.ip);
   var ip = req.params.ip;
   const result = geoController.getTracksByIP(req, res, ip);
   return result;

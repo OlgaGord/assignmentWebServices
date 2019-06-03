@@ -28,9 +28,9 @@ body {
 }
 #ipgeolocation {
   /* display: table-cell; */
-  /* justify-items: left; */
   justify-content: space-around;
   flex-direction: column;
+  margin-left: 1%;
 }
 
 .record {
@@ -58,14 +58,24 @@ body {
 
 .visitMin,
 .visitMax {
-  width: 5vw;
-  height: 2vh;
-  border: 2px solid grey;
+  width: 7vw;
+  height: 3vh;
+  border: 1px solid grey;
   border-radius: 10px;
   text-align: center;
   flex-direction: column;
-  margin: 2%;
+  margin: 1%;
 }
 .buttons {
-  margin: 2%;
+  margin: 1%;
+}
+#search {
+  padding: 1%;
+  margin: 1%;
+  height: 2.5vh;
+}
+#searchIp {
+  height: 2.5vh;
+  margin: 1%;
+  padding: 1%;
 }

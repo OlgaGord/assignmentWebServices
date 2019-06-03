@@ -15,7 +15,7 @@ module.exports = class {
   }
 
   static async getWeather(req, res) {
-    console.log(req.query);
+    // console.log(req.query);
     const data = await geoModel.getWeather(req.query.lat, req.query.lon);
     return res.json(data);
   }

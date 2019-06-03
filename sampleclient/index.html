@@ -14,12 +14,17 @@
     <div class="wrapper">
      <div id="ipgeolocation">
         <h1>All IP</h1>
-        <div class="buttons">
+        <div id=searchDiv>
+          <input type="text" name="ip" id="searchIp" />
+          <button id="search">Search IP</button>
+        </div>
+        <div class="buttons" id="visitsRating">
           <button id="minVisit">Show min visits</button>
           <button id="maxVisit">Show max visits</button>
+          <button id="clearAll">Clear all</button>
         </div>
-       </div>
-      <div id="map"></div>
+      </div>
+        <div id="map"></div>
     </div>
  </body>
 </html>

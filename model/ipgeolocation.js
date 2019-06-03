@@ -13,7 +13,7 @@ module.exports = class {
   static async addTrack(req) {
     var ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
     if (ip == "::1") ip = "66.16.12.9";
-    console.log(ip);
+    // console.log(ip);
 
     let conn = await db.getConnection();
 
@@ -29,7 +29,7 @@ module.exports = class {
     if (rows.length == 0) {
       const geoResult = await fetch(
         "https://api.ipgeolocation.io/ipgeo?apiKey=c461a284199842f893dc5ec8561c9a7a&ip=" +
-          ip
+        ip
       );
       const geo = await geoResult.json();
 
@@ -76,7 +76,7 @@ module.exports = class {
 
   static async getWeather(lat, lon) {
     var uri = `http://api.apixu.com/v1/current.json?q=${lat},${lon}&key=907b13a03758480191c144019193005`;
-    console.log(uri);
+    // console.log(uri);
     const result = await fetch(uri);
     return await result.json();
   }
